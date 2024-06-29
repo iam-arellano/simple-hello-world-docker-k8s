@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-helloworld
+  namespace: namespace-helloworld
+  labels:
+    app: php-helloworld
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: php-helloworld
+  template:
+    metadata:
+      labels:
+        app: php-helloworld
+    spec:
+      containers:
+      - name: c-php-helloworld
+        image: raemondarellano/php-helloworld-image:latest
+        ports:
+        - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-helloworld
+  namespace: namespace-helloworld
+spec:
+  selector:
+    app: php-helloworld
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 80
+ #     nodePort: 30001
+
+
+
